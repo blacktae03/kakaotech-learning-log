@@ -11,9 +11,10 @@ let editingId = null;         // 수정 중인 Todo의 id (없으면 null)
 // 날짜 유틸
 // =========================================================
 
-// 오늘 날짜를 YYYY-MM-DD 형식으로 반환
+// 오늘 날짜를 YYYY-MM-DD 형식으로 반환 (로컬 시간 기준)
 function getToday() {
-  return new Date().toISOString().split('T')[0];
+  const now = new Date();
+  return toDateStr(now);
 }
 
 // YYYY-MM-DD 문자열을 "2026년 6월 3일 (화)" 형식으로 변환
@@ -28,11 +29,19 @@ function formatDate(dateStr) {
   return `${year}년 ${month}월 ${day}일 (${dayOfWeek})`;
 }
 
+// Date 객체를 YYYY-MM-DD 문자열로 변환 (로컬 시간 기준)
+function toDateStr(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 // 날짜 문자열에 offset(일수)를 더한 새 날짜 문자열 반환
 function addDays(dateStr, offset) {
   const date = new Date(dateStr + 'T00:00:00');
   date.setDate(date.getDate() + offset);
-  return date.toISOString().split('T')[0];
+  return toDateStr(date);
 }
 
 // =========================================================
